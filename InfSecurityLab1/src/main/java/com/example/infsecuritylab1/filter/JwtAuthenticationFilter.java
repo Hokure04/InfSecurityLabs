@@ -1,10 +1,9 @@
 package com.example.infsecuritylab1.filter;
 
 import com.example.infsecuritylab1.exception.AuthorizeException;
-import com.example.infsecuritylab1.service.UserService;
-import com.example.infsecuritylab1.exception.GlobalExceptionHandler;
 import com.example.infsecuritylab1.exception.JwtTokenExpiredException;
 import com.example.infsecuritylab1.service.JwtService;
+import com.example.infsecuritylab1.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,9 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

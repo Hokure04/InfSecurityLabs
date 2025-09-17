@@ -1,6 +1,5 @@
 package com.example.infsecuritylab1.dto;
 
-import com.example.infsecuritylab1.model.Role;
 import lombok.Data;
 
 @Data
@@ -9,5 +8,4 @@ public class RegistrationDto {
     private String lastName;
     private String email;
     private String password;
-    private Role role;
 }

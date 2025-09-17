@@ -2,7 +2,6 @@ package com.example.infsecuritylab1.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 

@@ -6,6 +6,7 @@ import com.example.infsecuritylab1.dto.LoginDto;
 import com.example.infsecuritylab1.dto.RegistrationDto;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +24,8 @@ public class AuthController {
 
     @PostMapping("/sign-up")
     public ApplicationResponseDto signUp(@RequestBody RegistrationDto request){
+        request.setFirstName(StringEscapeUtils.escapeHtml4(request.getFirstName()));
+        request.setLastName(StringEscapeUtils.escapeHtml4(request.getLastName()));
         return authService.signUp(request);
     }
 
