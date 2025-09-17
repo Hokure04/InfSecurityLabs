@@ -1,9 +1,10 @@
-package com.example.infsecuritylab1.middleware;
+package com.example.infsecuritylab1.filter;
 
+import com.example.infsecuritylab1.exception.AuthorizeException;
 import com.example.infsecuritylab1.service.UserService;
-import com.example.infsecuritylab1.exception.ExceptionWrapper;
+import com.example.infsecuritylab1.exception.GlobalExceptionHandler;
 import com.example.infsecuritylab1.exception.JwtTokenExpiredException;
-import com.example.infsecuritylab1.services.JwtService;
+import com.example.infsecuritylab1.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -51,26 +52,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 UserDetails userDetails = userService
                         .getUserDetailsService()
                         .loadUserByUsername(username);
-
-                if (jwtService.isTokenValid(jwt, userDetails)) {
-                    SecurityContext context = SecurityContextHolder.createEmptyContext();
-                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                            userDetails,
-                            null,
-                            userDetails.getAuthorities()
-                    );
-                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    context.setAuthentication(authToken);
-                    SecurityContextHolder.setContext(context);
+                if (!jwtService.isTokenValid(jwt, userDetails)){
+                    throw new JwtTokenExpiredException("JWT token is invalid or expired");
                 }
+
+                if(!userDetails.isEnabled()){
+                    throw new AuthorizeException("Ваш аккаунт заблокирован");
+                }
+
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                        userDetails,
+                        null,
+                        userDetails.getAuthorities()
+                );
+                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authToken);
             }
             filterChain.doFilter(request, response);
-        }catch (JwtTokenExpiredException | UsernameNotFoundException e){
-            log.error("JWT token expired");
-            response.setStatus(HttpStatus.FORBIDDEN.value());
-            var wr = new ExceptionWrapper(new Exception("Invalid account"));
-            response.getWriter().write(wr.getMessage());
-            response.getWriter().flush();
+        }catch (JwtTokenExpiredException | UsernameNotFoundException | AuthorizeException e){
+            log.error("Authentication error {}", e.getMessage());
+            throw e;
         }
     }
 }

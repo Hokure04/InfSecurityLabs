@@ -1,4 +1,4 @@
-package com.example.infsecuritylab1.models;
+package com.example.infsecuritylab1.model;
 
 public enum Role {
     ROLE_ADMIN,

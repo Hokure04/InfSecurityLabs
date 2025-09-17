@@ -1,6 +1,6 @@
 package com.example.infsecuritylab1.repository;
 
-import com.example.infsecuritylab1.models.User;
+import com.example.infsecuritylab1.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

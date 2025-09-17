@@ -1,6 +1,7 @@
 package com.example.infsecuritylab1.service;
 
-import com.example.infsecuritylab1.models.User;
+import com.example.infsecuritylab1.model.Role;
+import com.example.infsecuritylab1.model.User;
 import com.example.infsecuritylab1.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,16 +23,17 @@ public class UserService {
 
 
     public User addUser(final User user){
-//        user.setPassword(user.getPassword());
         User newUser = userRepository.save(user);
         log.info("{} registered successfully", user.getEmail());
         return newUser;
     }
 
-    public User updateUser(final User user){
-        User updUser = userRepository.save(user);
-        log.info("{} updated successfully", user.getEmail());
-        return updUser;
+    public List<User> getAllUsers(){
+        return userRepository.findAll();
+    }
+
+    public long countUsers(){
+        return userRepository.count();
     }
 
     public boolean isExist(final String email){
@@ -48,6 +51,20 @@ public class UserService {
             throw new UsernameNotFoundException("User with email: " + email + " not found");
         }
         return userRepository.findByEmail(email).get();
+    }
+
+    public User promoteToAdmin(Long id){
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        user.setRole(Role.ROLE_ADMIN);
+        return userRepository.save(user);
+    }
+
+    public User blockUser(Long id){
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        user.setEnabled(false);
+        return userRepository.save(user);
     }
 
     public UserDetailsService getUserDetailsService() {

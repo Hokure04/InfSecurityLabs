@@ -1,4 +1,4 @@
-package com.example.infsecuritylab1.models;
+package com.example.infsecuritylab1.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -42,6 +42,8 @@ public class User implements UserDetails {
     @JsonIgnore
     private Role role;
 
+    private boolean enabled = true;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities(){
         return List.of(new SimpleGrantedAuthority(role.name()));
@@ -50,5 +52,10 @@ public class User implements UserDetails {
     @Override
     public String getUsername(){
         return email;
+    }
+
+    @Override
+    public boolean isEnabled(){
+        return enabled;
     }
 }

@@ -1,4 +1,4 @@
-package com.example.infsecuritylab1.authorization;
+package com.example.infsecuritylab1.controller;
 
 import com.example.infsecuritylab1.service.AuthService;
 import com.example.infsecuritylab1.dto.ApplicationResponseDto;

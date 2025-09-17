@@ -1,6 +1,6 @@
 package com.example.infsecuritylab1.dto;
 
-import com.example.infsecuritylab1.models.Role;
+import com.example.infsecuritylab1.model.Role;
 import lombok.Data;
 
 @Data

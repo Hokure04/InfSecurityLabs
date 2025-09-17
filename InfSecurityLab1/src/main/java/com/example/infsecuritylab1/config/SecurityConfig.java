@@ -1,5 +1,6 @@
-package com.example.infsecuritylab1.middleware;
+package com.example.infsecuritylab1.config;
 
+import com.example.infsecuritylab1.filter.JwtAuthenticationFilter;
 import com.example.infsecuritylab1.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -42,17 +43,14 @@ public class SecurityConfig {
                 }))
                 .authorizeHttpRequests(request -> request
                                 .requestMatchers("/auth/**").permitAll()
-                                .requestMatchers("/admin/**").authenticated()
-                                .requestMatchers("/user/**").authenticated()
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/api/**").authenticated()
                                 .anyRequest().permitAll()
                 )
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
-
-
-
     }
 
 

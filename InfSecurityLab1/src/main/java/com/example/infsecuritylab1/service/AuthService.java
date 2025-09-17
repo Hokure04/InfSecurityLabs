@@ -5,13 +5,10 @@ import com.example.infsecuritylab1.dto.LoginDto;
 import com.example.infsecuritylab1.dto.RegistrationDto;
 import com.example.infsecuritylab1.exception.AuthorizeException;
 import com.example.infsecuritylab1.exception.FieldNotSpecifiedException;
-import com.example.infsecuritylab1.models.Role;
-import com.example.infsecuritylab1.models.User;
-import com.example.infsecuritylab1.services.JwtService;
+import com.example.infsecuritylab1.model.Role;
+import com.example.infsecuritylab1.model.User;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,11 +23,14 @@ public class AuthService {
     private final JwtService jwtService;
 
     public ApplicationResponseDto signUp(RegistrationDto request){
+        var role = userService.countUsers() == 0 ? Role.ROLE_ADMIN : Role.SIMPLE_USER;
+
         var userBuilder = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .email(request.getEmail())
-                .role(Role.SIMPLE_USER)
+                .role(role)
+                .enabled(true)
                 .password(passwordEncoder.encode(request.getPassword()));
         log.info(userBuilder.build().getPassword());
         var user = userBuilder.build();
@@ -67,16 +67,5 @@ public class AuthService {
         }
         var jwt = jwtService.generateToken(user);
         return new ApplicationResponseDto(jwt);
-    }
-
-    public User getCurrentUser(){
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        if(principal instanceof UserDetails){
-            String username = ((UserDetails) principal).getUsername();
-            return userService.getUserByEmail(username);
-        }else{
-            throw new AuthorizeException("Текущий пользователь не авторизовн");
-        }
     }
 }
