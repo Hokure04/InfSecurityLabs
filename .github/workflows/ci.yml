@@ -46,8 +46,16 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
+      - name: Wait for Postgres
+        run: |
+          for i in {1..30}; do
+            pg_isready -h localhost -p 5432 -U postgres && break
+            echo "Waiting for Postgres..."
+            sleep 2
+          done
+
       - name: Build and run tests
-        run: mvn clean verify
+        run: mvn clean verify -Dspring.profiles.active=ci
         working-directory: InfSecurityLab1
 
       - name: Run SpotBugs
