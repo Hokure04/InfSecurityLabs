@@ -11,6 +11,10 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    env:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/infsecuritylab1
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: goodstory87
 
     services:
       postgres:
@@ -54,11 +58,11 @@ jobs:
         working-directory: InfSecurityLab1
 
       - name: OWASP Dependency-Check
-        run: mvn org..owasp:dependency-check-maven:check
+        run: mvn org.owasp:dependency-check-maven:check
         working-directory: InfSecurityLab1
 
       - name: Upload Dependency-Check report
         uses: actions/upload-artifact@v4
         with:
           name: dependency-check-report
-          path: target/dependency-check-report.html
+          path: InfSecurityLab1/target/dependency-check-report.html

@@ -4,4 +4,4 @@ public class FieldNotSpecifiedException extends RuntimeException {
     public FieldNotSpecifiedException(String message) {
         super(message);
     }
-} 
+}
