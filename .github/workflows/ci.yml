@@ -26,11 +26,11 @@ jobs:
           cache: maven
 
       - name: Build with Maven
-        working-directory: InfSecurityLab1$
+        working-directory: InfSecurityLab1
         run: mvn -B clean verify
 
       - name: Run SpotBugs (SAST)
-        working-directory: InfSecurityLab1$
+        working-directory: InfSecurityLab1
         run: mvn spotbugs:spotbugs
 
       - name: Upload SpotBugs report (HTML)
@@ -51,4 +51,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: snyk-report
-          path: InfSecurityLab1$/snyk-report.html
+          path: InfSecurityLab1/snyk-report.html
