@@ -52,7 +52,7 @@ public class UserService {
         }
         return userRepository.findByEmail(email).get();
     }
-    
+
 
     public User promoteToAdmin(Long id){
         User user = userRepository.findById(id)
