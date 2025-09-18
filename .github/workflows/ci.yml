@@ -2,9 +2,9 @@ name: MyPipe
 
 on:
   push:
-    branches: ["master"]
+    branches: main
   pull_request:
-    branches: ["master"]
+    branches: main
 
 jobs:
   build:
@@ -26,21 +26,21 @@ jobs:
           cache: maven
 
       - name: Build with Maven
-        working-directory: iblab1
+        working-directory: InfSecurityLab1$
         run: mvn -B clean verify
 
       - name: Run SpotBugs (SAST)
-        working-directory: iblab1
+        working-directory: InfSecurityLab1$
         run: mvn spotbugs:spotbugs
 
       - name: Upload SpotBugs report (HTML)
         uses: actions/upload-artifact@v4
         with:
           name: spotbugs-report
-          path: iblab1/target/spotbugs.html
+          path: InfSecurityLab1/target/spotbugs.html
 
       - name: Run Snyk test (SCA)
-        working-directory: iblab1
+        working-directory: InfSecurityLab1
         run: |
           npm install -g snyk snyk-to-html
           snyk auth $SNYK_TOKEN
@@ -51,4 +51,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: snyk-report
-          path: iblab1/snyk-report.html
+          path: InfSecurityLab1$/snyk-report.html
