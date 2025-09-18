@@ -32,12 +32,15 @@ jobs:
 
       - name: Maven Build
         run: mvn clean verify
+        working-directory: InfSecurityLab1
 
       - name: SpotBugs
         run: mvn com.github.spotbugs:spotbugs-maven-plugin:4.7.3.0:check
+        working-directory: InfSecurityLab1
 
       - name: OWASP Dependency-Check
         run: mvn org..owasp:dependency-check-maven:check
+        working-directory: InfSecurityLab1
 
       - name: Upload Dependency-Check report
         uses: actions/upload-artifact@v4
