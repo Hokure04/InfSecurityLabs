@@ -51,7 +51,7 @@ jobs:
         working-directory: InfSecurityLab1
 
       - name: Run SpotBugs
-        run: mvn com.github.spotbugs:spotbugs-maven-plugin:4.7.3.0:check
+        run: mvn com.github.spotbugs:spotbugs-maven-plugin:4.7.3.0:spotbugs
         working-directory: InfSecurityLab1
 
       - name: Run OWASP Dependency-Check
