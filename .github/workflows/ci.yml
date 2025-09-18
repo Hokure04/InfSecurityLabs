@@ -46,7 +46,7 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Maven Build
-        run: mvn -f InfSecurityLab1/pom.xml clean verify
+        run: mvn clean verify
         working-directory: InfSecurityLab1
 
       - name: SpotBugs
