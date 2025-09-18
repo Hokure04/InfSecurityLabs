@@ -11,4 +11,4 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ApplicationResponseDto {
     private String token;
-}
+} 
